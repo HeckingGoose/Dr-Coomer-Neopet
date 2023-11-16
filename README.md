@@ -1,5 +1,5 @@
 # Dr Coomer
-Dr Coomer was a Pygame application that I originally made about five years ago as a joke.
+Dr Coomer was a Pygame application that I originally made about three years ago as a joke.
 
 I've decided to port it to C# and SDL2, as a way to learn using SDL2 with C#.
 # What is it?
