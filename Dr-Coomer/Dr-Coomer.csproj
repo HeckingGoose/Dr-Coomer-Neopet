@@ -7,14 +7,18 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <ApplicationIcon>Images\icon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Images\icon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Sayers.SDL2.Core" Version="1.0.11" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Images\" />
     <Folder Include="Audio\" />
     <Folder Include="Fonts\" />
   </ItemGroup>
