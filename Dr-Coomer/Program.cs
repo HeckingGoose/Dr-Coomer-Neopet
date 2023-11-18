@@ -21,6 +21,7 @@ namespace Dr_Coomer
                 MAXTHIRST = 100,
                 MAXHAPPINESS = 100;
             const double MOUTHSWITCHFREQUENCY = 0.2;
+            const double GRAVITY_PIXELSPERSECOND = 10;
             #endregion
 
             // Initialise window and renderer, then store pointer results

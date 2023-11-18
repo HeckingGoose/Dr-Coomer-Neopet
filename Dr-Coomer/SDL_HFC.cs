@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -344,8 +345,9 @@ namespace SDL2Test
         /// </summary>
         /// <param name="fontName">The name of the font to load.</param>
         /// <param name="pointSizes">An array of point sizes to load the font at.</param>
+        /// <param name="fonts">A dictionary that tracks all currently loaded fonts.</param>
         /// <returns></returns>
-        public static void LoadFonts(string fontName, int[] pointSizes, ref Dictionary<string, IntPtr> output)
+        public static void LoadFonts(string fontName, int[] pointSizes, ref Dictionary<string, IntPtr> fonts)
         {
             foreach (int pointSize in pointSizes)
             {
@@ -358,7 +360,7 @@ namespace SDL2Test
                 else
                 {
                     string entryName = $"{fontName.Split('\\').Last().Split('.')[0]}_{pointSize}";
-                    output.Add(entryName, font);
+                    fonts.Add(entryName, font);
                 }
             }
         }
@@ -388,6 +390,144 @@ namespace SDL2Test
             {
                 return false;
             }
+        }
+        #endregion
+        #region Particle functions
+        /// <summary>
+        /// Creates a number of particles based on the given parameters.
+        /// </summary>
+        /// <param name="particleCount">The number of particles to create.</param>
+        /// <param name="texture">The texture that each particle should use.</param>
+        /// <param name="position">The starting position of every angle.</param>
+        /// <param name="speed">The base magnitude of each particle's velocity.</param>
+        /// <param name="speedVariance">The total variance between each particle's velocity (e.g. value of 1 would be +/- 0.5).</param>
+        /// <param name="coneAngle">An angle (taking up as 0) defining the direction of the particles (in degrees).</param>
+        /// <param name="coneSize">An angle defining the size of the cone that the particle velocities can start in (in degrees).</param>
+        /// <param name="accelleration">The starting (x,y) accelleration of the particles.</param>
+        /// <param name="drag">The drag coefficient of each particle.</param>
+        /// <param name="lifeTime">The life time in seconds of each particle.</param>
+        /// <param name="gravity">True if gravity should be applied to the particle.</param>
+        /// <param name="particles">A list tracking every particle that currently exists.</param>
+        public static void SpawnParticles(
+            uint particleCount,
+            Texture texture,
+            ref List<Particle> particles,
+            Vector2 position = new Vector2(),
+            float speed = 1f,
+            float speedVariance = 0f,
+            float coneAngle = 0f,
+            float coneSize = 0f,
+            Vector2 accelleration = new Vector2(),
+            float drag = 0f,
+            float lifeTime = 5f,
+            bool gravity = true
+            )
+        {
+            // To save on processing time, create new array to temporarily hold the new particles
+            Particle[] container = new Particle[particleCount];
+
+            // Create randomiser
+            Random random = new Random();
+
+            // Begin creating particles
+            for (int i = 0; i < particleCount; i++)
+            {
+                // Create new particle
+                Particle particle = new Particle();
+
+                // Load in 1:1 values
+                particle.Texture = texture;
+                particle.Position = position;
+                particle.Accelleration = accelleration;
+                particle.LifeTime = lifeTime;
+                particle.Drag = drag;
+                particle.Gravity = gravity;
+
+                // BEGIN CALCULATE VELOCITY
+                // Calculate angle
+                float velocityAngle = coneAngle + coneSize * (random.NextSingle() - 0.5f);
+
+                // Wrap angle
+                if (velocityAngle >= 360f)
+                {
+                    velocityAngle -= 360f;
+                }
+                else if (velocityAngle < 0)
+                {
+                    velocityAngle += 360;
+                }
+
+                // Calculate speed
+                float velocityMagnitude = speed + speedVariance * (random.NextSingle() - 0.5f);
+
+                // Define velocity
+                Vector2 velocity = Vector2.Zero;
+
+                // If the direction is in the first quadrant
+                if (velocityAngle <= 90)
+                {
+                    // Convert to radians
+                    velocityAngle *= (float)Math.PI / 180f;
+
+                    // Calculate vector components
+                    velocity.X = velocityMagnitude * (float)Math.Sin(velocityAngle);
+                    velocity.Y = velocityMagnitude * (float)Math.Cos(velocityAngle);
+                }
+                // If the direction is in the second quadrant
+                else if (velocityAngle <= 180)
+                {
+                    // Set velocityAngle to between 0-90
+                    velocityAngle -= 90;
+
+                    // Convert to radians
+                    velocityAngle *= (float)Math.PI / 180f;
+
+                    // Calculate vector components
+                    velocity.X = velocityMagnitude * (float)Math.Cos(velocityAngle);
+                    velocity.Y = -velocityMagnitude * (float)Math.Sin(velocityAngle);
+                }
+                // If the direction is in the third quadrant
+                else if (velocityAngle <= 270)
+                {
+                    // Set velocityAngle to between 0-90
+                    velocityAngle -= 180;
+
+                    // Convert to radians
+                    velocityAngle *= (float)Math.PI / 180f;
+
+                    // Calculate vector components
+                    velocity.X = -velocityMagnitude * (float)Math.Cos(velocityAngle);
+                    velocity.Y = -velocityMagnitude * (float)Math.Sin(velocityAngle);
+                }
+                // If the direction is in the fourth quadrant
+                else
+                {
+                    // Set velocityAngle to between 0-90
+                    velocityAngle -= 270;
+
+                    // Convert to radians
+                    velocityAngle *= (float)Math.PI / 180f;
+
+                    // Calculate vector components
+                    velocity.X = -velocityMagnitude * (float)Math.Cos(velocityAngle);
+                    velocity.Y = velocityMagnitude * (float)Math.Sin(velocityAngle);
+                }
+
+                // Multiply vector components by speed
+                velocity.X *= speed;
+                velocity.Y *= speed;
+
+                // END CALCULATE VELOCITY
+
+                // Store velocity
+                particle.Velocity = velocity;
+
+                // Cache particle
+                container[i] = particle;
+            }
+
+            // Add container to particles
+            particles.AddRange(container);
         }
         #endregion
     }
