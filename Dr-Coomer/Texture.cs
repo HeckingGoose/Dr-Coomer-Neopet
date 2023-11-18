@@ -10,39 +10,44 @@ namespace SDL2Test
     internal class Texture
     {
         // Variables
-        private IntPtr pointer = IntPtr.Zero;
-        private SDL.SDL_Rect rect;
+        private IntPtr _pointer;
+        private SDL.SDL_Rect _rect;
 
         // Constructors
-        public Texture(IntPtr renderer, string fileName)
+        public Texture() // Default constructor
         {
-            pointer = SDL_image.IMG_LoadTexture(renderer, fileName);
-            rect = new SDL.SDL_Rect();
+            _pointer = IntPtr.Zero;
+            _rect = new SDL.SDL_Rect();
+        }
+        public Texture(IntPtr renderer, string fileName) // Load texture from file
+        {
+            _pointer = SDL_image.IMG_LoadTexture(renderer, fileName);
+            _rect = new SDL.SDL_Rect();
 
-            if (pointer != IntPtr.Zero)
+            if (_pointer != IntPtr.Zero)
             {
-                SDL.SDL_QueryTexture(pointer, out uint format, out int access, out int w, out int h);
-                rect.x = 0;
-                rect.y = 0;
-                rect.w = w;
-                rect.h = h;
+                SDL.SDL_QueryTexture(_pointer, out uint format, out int access, out int w, out int h);
+                _rect.x = 0;
+                _rect.y = 0;
+                _rect.w = w;
+                _rect.h = h;
             }
         }
-        public Texture(IntPtr surfacePointer, SDL.SDL_Rect surfaceRect)
+        public Texture(IntPtr pointer, SDL.SDL_Rect rect) // Pass in values
         {
-            pointer = surfacePointer;
-            rect = surfaceRect;
+            _pointer = pointer;
+            _rect = rect;
         }
 
         // Methods
         public IntPtr Pointer
         {
-            get { return pointer; }
+            get { return _pointer; }
         }
         public SDL.SDL_Rect Rect
         {
-            get { return rect; }
-            set { rect = value; }
+            get { return _rect; }
+            set { _rect = value; }
         }
     }
 }
