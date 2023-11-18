@@ -85,7 +85,7 @@ namespace SDL2Test
             IntPtr renderer,
             List<IntPtr> textures,
             List<IntPtr> audioPointers,
-            Dictionary<int, IntPtr> fonts
+            Dictionary<string, IntPtr> fonts
             )
         {
             // Clean up textures
@@ -99,7 +99,7 @@ namespace SDL2Test
                 SDL.SDL_FreeWAV(wav);
             }
             // Clean up fonts
-            foreach (KeyValuePair<int, IntPtr> font in fonts)
+            foreach (KeyValuePair<string, IntPtr> font in fonts)
             {
                 SDL_ttf.TTF_CloseFont(font.Value);
             }
@@ -345,9 +345,8 @@ namespace SDL2Test
         /// <param name="fontName">The name of the font to load.</param>
         /// <param name="pointSizes">An array of point sizes to load the font at.</param>
         /// <returns></returns>
-        public static Dictionary<int, IntPtr> LoadFonts(string fontName, int[] pointSizes)
+        public static void LoadFonts(string fontName, int[] pointSizes, ref Dictionary<string, IntPtr> output)
         {
-            Dictionary<int, IntPtr> output = new Dictionary<int, IntPtr>();
             foreach (int pointSize in pointSizes)
             {
                 IntPtr font = SDL_ttf.TTF_OpenFont(fontName, pointSize);
@@ -358,10 +357,10 @@ namespace SDL2Test
                 }
                 else
                 {
-                    output.Add(pointSize, font);
+                    string entryName = $"{fontName.Split('\\').Last().Split('.')[0]}_{pointSize}";
+                    output.Add(entryName, font);
                 }
             }
-            return output;
         }
         #endregion
         #region Collision tests

@@ -31,7 +31,8 @@ namespace Dr_Coomer
             // Pointer trackers
             List<IntPtr> textures = new List<IntPtr>();
             List<IntPtr> audioPointers = new List<IntPtr>();
-            Dictionary<int, IntPtr> fonts = new Dictionary<int, IntPtr>();
+            List<Particle> particles = new List<Particle>();
+            Dictionary<string, IntPtr> fonts = new Dictionary<string, IntPtr>();
 
             // Audio playing timer, since callback functions don't work in this wrapper
             double playingTimer = 0;
@@ -75,7 +76,7 @@ namespace Dr_Coomer
 
             #region Asset loading
             // LOAD FONTS
-            fonts = SDL_HFC.LoadFonts(@"Fonts\m5x7.ttf", new int[2] { 48, 60 });
+            SDL_HFC.LoadFonts(@"Fonts\m5x7.ttf", new int[2] { 48, 60 }, ref fonts);
             // END LOAD FONTS
 
             // CREATE ICON
@@ -120,18 +121,18 @@ namespace Dr_Coomer
 
             // GENERATE TEXT SURFACES
             // Create surfaces
-            Texture shopText = SDL_HFC.TextureFromText(o.renderer, "Shop", fonts[48], white);
-            Texture buyText = SDL_HFC.TextureFromText(o.renderer, "Buy", fonts[48], white);
+            Texture shopText = SDL_HFC.TextureFromText(o.renderer, "Shop", fonts["m5x7_48"], white);
+            Texture buyText = SDL_HFC.TextureFromText(o.renderer, "Buy", fonts["m5x7_48"], white);
 
-            Texture sodaText = SDL_HFC.TextureFromText(o.renderer, "Soda", fonts[60], white);
-            Texture pizzaText = SDL_HFC.TextureFromText(o.renderer, "Pizza", fonts[60], white);
-            Texture killText = SDL_HFC.TextureFromText(o.renderer, "Kill a man", fonts[60], white);
+            Texture sodaText = SDL_HFC.TextureFromText(o.renderer, "Soda", fonts["m5x7_60"], white);
+            Texture pizzaText = SDL_HFC.TextureFromText(o.renderer, "Pizza", fonts["m5x7_60"], white);
+            Texture killText = SDL_HFC.TextureFromText(o.renderer, "Kill a man", fonts["m5x7_60"], white);
 
-            Texture thirstText = SDL_HFC.TextureFromText(o.renderer, "+15 Thirst", fonts[48], white);
-            Texture hungerText = SDL_HFC.TextureFromText(o.renderer, "+15 Hunger", fonts[48], white);
-            Texture happyText = SDL_HFC.TextureFromText(o.renderer, "+15 Happiness", fonts[48], white);
+            Texture thirstText = SDL_HFC.TextureFromText(o.renderer, "+15 Thirst", fonts["m5x7_48"], white);
+            Texture hungerText = SDL_HFC.TextureFromText(o.renderer, "+15 Hunger", fonts["m5x7_48"], white);
+            Texture happyText = SDL_HFC.TextureFromText(o.renderer, "+15 Happiness", fonts["m5x7_48"], white);
 
-            Texture costText = SDL_HFC.TextureFromText(o.renderer, "-5 Playcoins", fonts[48], white);
+            Texture costText = SDL_HFC.TextureFromText(o.renderer, "-5 Playcoins", fonts["m5x7_48"], white);
 
             // Track pointers
             textures.Add(shopText.Pointer);
@@ -183,7 +184,7 @@ namespace Dr_Coomer
                 0,
                 o.renderer,
                 "Shop",
-                fonts[48],
+                fonts["m5x7_48"],
                 shopButtonRect,
                 (0, 0, 0, 255),
                 (255, 255, 255, 255)
@@ -192,7 +193,7 @@ namespace Dr_Coomer
                 1,
                 o.renderer,
                 "Buy",
-                fonts[48],
+                fonts["m5x7_48"],
                 buyPizzaRect,
                 (0, 0, 0, 255),
                 (255, 255, 255, 255)
@@ -201,7 +202,7 @@ namespace Dr_Coomer
                 2,
                 o.renderer,
                 "Buy",
-                fonts[48],
+                fonts["m5x7_48"],
                 buySodaRect,
                 (0, 0, 0, 255),
                 (255, 255, 255, 255)
@@ -210,7 +211,7 @@ namespace Dr_Coomer
                 3,
                 o.renderer,
                 "Buy",
-                fonts[48],
+                fonts["m5x7_48"],
                 buyKillRect,
                 (0, 0, 0, 255),
                 (255, 255, 255, 255)
@@ -219,7 +220,7 @@ namespace Dr_Coomer
                 4,
                 o.renderer,
                 "Back",
-                fonts[48],
+                fonts["m5x7_48"],
                 backButtonRect,
                 (0, 0, 0, 255),
                 (255, 255, 255, 255)
@@ -494,25 +495,25 @@ namespace Dr_Coomer
                         Texture hungerTexture = SDL_HFC.TextureFromText(
                             o.renderer,
                             $"Hunger: {hunger}",
-                            fonts[48],
+                            fonts["m5x7_48"],
                             white
                             );
                         Texture thirstTexture = SDL_HFC.TextureFromText(
                             o.renderer,
                             $"Thirst: {thirst}",
-                            fonts[48],
+                            fonts["m5x7_48"],
                             white
                             );
                         Texture happinessTexture = SDL_HFC.TextureFromText(
                             o.renderer,
                             $"Happiness: {happiness}",
-                            fonts[48],
+                            fonts["m5x7_48"],
                             white
                             );
                         Texture playcoinsTexture = SDL_HFC.TextureFromText(
                             o.renderer,
                             $"Playcoins: {playcoins}",
-                            fonts[48],
+                            fonts["m5x7_48"],
                             white
                             );
 
