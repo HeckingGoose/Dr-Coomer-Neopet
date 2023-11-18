@@ -63,15 +63,15 @@ namespace Dr_Coomer
             }
 
             _fillColour_Hover = new SDL.SDL_Color();
-            _fillColour_Hover.r = (Byte)Math.Clamp(fillColour.r - 15 * sign, 0, 256);
-            _fillColour_Hover.g = (Byte)Math.Clamp(fillColour.g - 15 * sign, 0, 256);
-            _fillColour_Hover.b = (Byte)Math.Clamp(fillColour.b - 15 * sign, 0, 256);
+            _fillColour_Hover.r = (Byte)Math.Clamp(fillColour.r - 30 * sign, 0, 256);
+            _fillColour_Hover.g = (Byte)Math.Clamp(fillColour.g - 30 * sign, 0, 256);
+            _fillColour_Hover.b = (Byte)Math.Clamp(fillColour.b - 30 * sign, 0, 256);
             _fillColour_Hover.a = fillColour.a;
 
             _fillColour_Clicked = new SDL.SDL_Color();
-            _fillColour_Clicked.r = (Byte)Math.Clamp(fillColour.r - 45 * sign, 0, 256);
-            _fillColour_Clicked.g = (Byte)Math.Clamp(fillColour.g - 45 * sign, 0, 256);
-            _fillColour_Clicked.b = (Byte)Math.Clamp(fillColour.b - 45 * sign, 0, 256);
+            _fillColour_Clicked.r = (Byte)Math.Clamp(fillColour.r - 60 * sign, 0, 256);
+            _fillColour_Clicked.g = (Byte)Math.Clamp(fillColour.g - 60 * sign, 0, 256);
+            _fillColour_Clicked.b = (Byte)Math.Clamp(fillColour.b - 60 * sign, 0, 256);
             _fillColour_Clicked.a = fillColour.a;
 
             _pressed = 0;
