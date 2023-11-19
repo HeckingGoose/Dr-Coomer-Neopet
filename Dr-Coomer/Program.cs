@@ -405,7 +405,7 @@ namespace Dr_Coomer
                                 coneSize: 60f,
                                 drag: 7f,
                                 lifeTime: 4f,
-                                size: new Vector2(20, 20)
+                                size: new Vector2(40, 40)
                                 );
 
                         }
@@ -455,6 +455,35 @@ namespace Dr_Coomer
                                                 {
                                                     hunger = MAXHUNGER;
                                                 }
+                                                // Spawn pizza particles
+                                                SDL_HFC.SpawnParticles(
+                                                    10,
+                                                    pizza,
+                                                    ref particles,
+                                                    position: new Vector2(x, y),
+                                                    speed: 20f,
+                                                    speedVariance: 5f,
+                                                    coneSize: 60f,
+                                                    drag: 7f,
+                                                    lifeTime: 4f,
+                                                    size: new Vector2(40, 40)
+                                                    );
+                                            }
+                                            else
+                                            {
+                                                // Spawn fail particles
+                                                SDL_HFC.SpawnParticles(
+                                                    10,
+                                                    cross,
+                                                    ref particles,
+                                                    position: new Vector2(x, y),
+                                                    speed: 20f,
+                                                    speedVariance: 5f,
+                                                    coneSize: 60f,
+                                                    drag: 7f,
+                                                    lifeTime: 4f,
+                                                    size: new Vector2(40, 40)
+                                                    );
                                             }
                                             break;
                                         case 2: // Buy soda button
@@ -466,6 +495,35 @@ namespace Dr_Coomer
                                                 {
                                                     thirst = MAXTHIRST;
                                                 }
+                                                // Spawn soda particles
+                                                SDL_HFC.SpawnParticles(
+                                                    10,
+                                                    soda,
+                                                    ref particles,
+                                                    position: new Vector2(x, y),
+                                                    speed: 20f,
+                                                    speedVariance: 5f,
+                                                    coneSize: 60f,
+                                                    drag: 7f,
+                                                    lifeTime: 4f,
+                                                    size: new Vector2(40, 40)
+                                                    );
+                                            }
+                                            else
+                                            {
+                                                // Spawn fail particles
+                                                SDL_HFC.SpawnParticles(
+                                                    10,
+                                                    cross,
+                                                    ref particles,
+                                                    position: new Vector2(x, y),
+                                                    speed: 20f,
+                                                    speedVariance: 5f,
+                                                    coneSize: 60f,
+                                                    drag: 7f,
+                                                    lifeTime: 4f,
+                                                    size: new Vector2(40, 40)
+                                                    );
                                             }
                                             break;
                                         case 3: // Buy kill button
@@ -477,6 +535,35 @@ namespace Dr_Coomer
                                                 {
                                                     happiness = MAXHAPPINESS;
                                                 }
+                                                // Spawn pistol particles
+                                                SDL_HFC.SpawnParticles(
+                                                    10,
+                                                    pistol,
+                                                    ref particles,
+                                                    position: new Vector2(x, y),
+                                                    speed: 20f,
+                                                    speedVariance: 5f,
+                                                    coneSize: 60f,
+                                                    drag: 7f,
+                                                    lifeTime: 4f,
+                                                    size: new Vector2(40, 40)
+                                                    );
+                                            }
+                                            else
+                                            {
+                                                // Spawn fail particles
+                                                SDL_HFC.SpawnParticles(
+                                                    10,
+                                                    cross,
+                                                    ref particles,
+                                                    position: new Vector2(x, y),
+                                                    speed: 20f,
+                                                    speedVariance: 5f,
+                                                    coneSize: 60f,
+                                                    drag: 7f,
+                                                    lifeTime: 4f,
+                                                    size: new Vector2(40, 40)
+                                                    );
                                             }
                                             break;
                                         case 4: // Back button
