@@ -420,7 +420,8 @@ namespace SDL2Test
             Vector2 accelleration = new Vector2(),
             float drag = 0f,
             float lifeTime = 5f,
-            bool gravity = true
+            bool gravity = true,
+            Vector2 size = new Vector2()
             )
         {
             // To save on processing time, create new array to temporarily hold the new particles
@@ -442,6 +443,7 @@ namespace SDL2Test
                 particle.LifeTime = lifeTime;
                 particle.Drag = drag;
                 particle.Gravity = gravity;
+                particle.Size = size;
 
                 // BEGIN CALCULATE VELOCITY
                 // Calculate angle
@@ -528,6 +530,95 @@ namespace SDL2Test
 
             // Add container to particles
             particles.AddRange(container);
+        }
+        /// <summary>
+        /// Updates a given list of particles over a given time step.
+        /// </summary>
+        /// <param name="timeStep">The time increment that this update represents.</param>
+        /// <param name="gravity">The downward accelleration of particles affected by gravity.</param>
+        /// <param name="particles">The list of particles to update.</param>
+        public static void StepParticles(
+            float timeStep,
+            float gravity,
+            ref List<Particle> particles)
+        {
+            // Backup particles so that loop does not break
+            List<Particle> container = new List<Particle>();
+            container.AddRange(particles);
+
+            // Loop through every particle
+            foreach (Particle particle in container)
+            {
+                // Check if particle has expired
+                if (particle.LifeTime < 0)
+                {
+                    particles.Remove(particle);
+                    continue;
+                }
+                
+                // Read in values
+                Vector2 position = particle.Position;
+                Vector2 velocity = particle.Velocity;
+                Vector2 accelleration = particle.Accelleration;
+
+                // Update position
+                position.X -= velocity.X * timeStep;
+                position.Y -= velocity.Y * timeStep;
+
+                // Update velocity
+                velocity.X -= accelleration.X * timeStep;
+                velocity.Y -= accelleration.Y * timeStep;
+
+                // Apply drag
+                if (velocity.X > 0)
+                {
+                    velocity.X -= particle.Drag * timeStep;
+                }
+                else
+                {
+                    velocity.X += particle.Drag * timeStep;
+                }
+                if (velocity.Y > 0)
+                {
+                    velocity.Y -= particle.Drag * timeStep;
+                }
+                else
+                {
+                    velocity.Y += particle.Drag * timeStep;
+                }
+
+                // If the particle is affected by gravity
+                if (particle.Gravity)
+                {
+                    accelleration.Y += gravity * timeStep;
+                }
+
+                // Update particle timer
+                particle.LifeTime -= timeStep;
+
+                // Store output
+                particle.Position = position;
+                particle.Velocity = velocity;
+                particle.Accelleration = accelleration;
+            }
+        }
+        /// <summary>
+        /// Draws every particle in a given list.
+        /// </summary>
+        /// <param name="renderer">The renderer to draw the particles with.</param>
+        /// <param name="particles">The list of particles to draw.</param>
+        public static void DrawParticles(
+            IntPtr renderer,
+            ref List<Particle> particles
+            )
+        {
+            // Loop through each particle
+            foreach (Particle particle in particles)
+            {
+                Vector2 position = particle.Position;
+                Vector2 size = particle.Size;
+                DrawTexture(renderer, particle.Texture, (int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
+            }
         }
         #endregion
     }

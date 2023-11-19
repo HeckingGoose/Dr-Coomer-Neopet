@@ -18,6 +18,7 @@ namespace Dr_Coomer
         private float _drag;
         private float _lifeTime;
         private bool _gravity;
+        private Vector2 _size;
 
         // Constructors
         public Particle() // Default constructor
@@ -29,6 +30,7 @@ namespace Dr_Coomer
             _drag = 0;
             _lifeTime = 1;
             _gravity = false;
+            _size = new Vector2();
         }
         public Particle( // Pass in values
             Texture texture,
@@ -37,7 +39,8 @@ namespace Dr_Coomer
             Vector2 accelleration,
             float drag,
             float lifeTime,
-            bool gravity
+            bool gravity,
+            Vector2 size
             )
         {
             _texture = texture;
@@ -47,6 +50,7 @@ namespace Dr_Coomer
             _drag = drag;
             _lifeTime = lifeTime;
             _gravity = gravity;
+            _size = size;
         }
 
         // Methods
@@ -84,6 +88,11 @@ namespace Dr_Coomer
         {
             get { return _gravity; }
             set { _gravity = value; }
+        }
+        public Vector2 Size
+        {
+            get { return _size; }
+            set { _size = value; }
         }
     }
 }

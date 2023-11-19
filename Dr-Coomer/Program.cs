@@ -3,6 +3,7 @@ using SDL2;
 using System.Diagnostics;
 using System;
 using System.Collections;
+using System.Numerics;
 
 namespace Dr_Coomer
 {
@@ -21,7 +22,7 @@ namespace Dr_Coomer
                 MAXTHIRST = 100,
                 MAXHAPPINESS = 100;
             const double MOUTHSWITCHFREQUENCY = 0.2;
-            const double GRAVITY_PIXELSPERSECOND = 10;
+            const float GRAVITY_PIXELSPERSECOND = 8000; // These values be kinda funky
             #endregion
 
             // Initialise window and renderer, then store pointer results
@@ -95,6 +96,8 @@ namespace Dr_Coomer
             Texture pistol = SDL_HFC.LoadTexture(o.renderer, @"Images\pistol.png");
             Texture pizza = SDL_HFC.LoadTexture(o.renderer, @"Images\pizza.png");
             Texture soda = SDL_HFC.LoadTexture(o.renderer, @"Images\soda.png");
+            Texture playcoin = SDL_HFC.LoadTexture(o.renderer, @"Images\playcoin.png");
+            Texture cross = SDL_HFC.LoadTexture(o.renderer, @"Images\cross.png");
 
             // Track pointers
             textures.Add(coomerClosed.Pointer);
@@ -390,6 +393,21 @@ namespace Dr_Coomer
                         if (SDL.SDL_BUTTON_LEFT == mouseButtonMask && !mouseHeld)
                         {
                             playcoins++;
+
+                            // Spawn playcoin particles
+                            SDL_HFC.SpawnParticles(
+                                10,
+                                playcoin,
+                                ref particles,
+                                position: new Vector2(x, y),
+                                speed: 20f,
+                                speedVariance: 5f,
+                                coneSize: 60f,
+                                drag: 7f,
+                                lifeTime: 4f,
+                                size: new Vector2(20, 20)
+                                );
+
                         }
                         // Update button colours
                         foreach (Button_Colour button in mainButtons)
@@ -486,9 +504,12 @@ namespace Dr_Coomer
                 {
                     mouseHeld = false;
                 }
+                // Update particles
+                SDL_HFC.StepParticles(deltaTime, GRAVITY_PIXELSPERSECOND, ref particles);
+
                 // END GAME LOGIC
 
-                    // SCREENWRITING
+                // SCREENWRITING
                 switch (state)
                 {
                     default: // Main screen
@@ -663,6 +684,9 @@ namespace Dr_Coomer
                         }
                         break;
                 }
+                // Draw particles
+                SDL_HFC.DrawParticles(o.renderer, ref particles);
+
                 // END SCREENWRITING
 
                 // POST SCREENWRITE LOGIC
