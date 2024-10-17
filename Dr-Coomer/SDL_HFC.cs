@@ -1,13 +1,7 @@
 ﻿using Dr_Coomer;
 using SDL2;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SDL2Test
 {
@@ -307,12 +301,12 @@ namespace SDL2Test
         /// <returns></returns>
         public static IntPtr LoadWav(string fileName, out SDL.SDL_AudioSpec audioChannelSpecs, out IntPtr buffer, out uint length)
         {
-           IntPtr result = SDL.SDL_LoadWAV(
-               fileName,
-               out audioChannelSpecs,
-               out buffer,
-               out length);
-            
+            IntPtr result = SDL.SDL_LoadWAV(
+                fileName,
+                out audioChannelSpecs,
+                out buffer,
+                out length);
+
             if (result == IntPtr.Zero)
             {
                 Debug.WriteLine($"Failed to open WAV '{fileName}'. (Error: {SDL.SDL_GetError()})");
@@ -375,9 +369,9 @@ namespace SDL2Test
         /// <returns></returns>
         public static bool TestBoundingBox(SDL.SDL_Rect boundingBox, int x, int y)
         {
-            if (x >= boundingBox.x && x<= boundingBox.x + boundingBox.w) // If X co-ords match
+            if (x >= boundingBox.x && x <= boundingBox.x + boundingBox.w) // If X co-ords match
             {
-                if (y >= boundingBox.y && y <=  boundingBox.y + boundingBox.h) // If Y co-ords match
+                if (y >= boundingBox.y && y <= boundingBox.y + boundingBox.h) // If Y co-ords match
                 {
                     return true;
                 }
@@ -555,7 +549,7 @@ namespace SDL2Test
                     particles.Remove(particle);
                     continue;
                 }
-                
+
                 // Read in values
                 Vector2 position = particle.Position;
                 Vector2 velocity = particle.Velocity;
